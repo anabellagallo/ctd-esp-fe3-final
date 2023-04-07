@@ -1,4 +1,4 @@
-import { createContext ,useContext,useState,useEffect} from "react";
+import { createContext ,useContext,useState,useEffect, useReducer} from "react";
 
 export const initialState = {theme: "", data: []}
 const themes ={
@@ -19,24 +19,61 @@ const themes ={
   }
   const initialThemeState = themes.light
   
+const themeReducer = (state,action) =>{
+  switch (action.type) {
+    case "Switch_dark":
+      return themes.dark
+      case "Swith_light":
+      return themes.light
+  
+    default:
+      throw new Error 
+  }
+}
+  const initialFavState = JSON.parse(localStorage.getItem("favs")) || []
+  const favReducer =(state,action) =>{
+    switch (action.type) {
+      case "ADD_FAV":
+        
+        return[...state,action.payload]
+    
+      default:
+        throw new Error
+    }
+  }
+  const initiaApiState={usersList: [],usersDetail : []}
+  const apiReducer =(state,action ) =>{
+    switch (action.type) {
+      case "Get_users":
+        return {usersList :action.payload, usersDetail : state.usersDetail}
+    
+      
+    }
+  }
 
-
-export const SaludStates = createContext();
+export const UsersStates = createContext();
 
 export const ContextProvider = ({ children }) => {
-  //Aqui deberan implementar la logica propia del Context, utilizando el hook useMemo
-  const[saludList,setSaludList] = useState([])
-  const url = ``
+
+  const [userList,setUsersList] =useState([])
+  const url = `https://jsonplaceholder.typicode.com/users`
+  const [themeState, themeDispath] = useReducer[themeReducer,initialThemeState]
+  const [favState,FavDispath] = useReducer [favReducer,initialFavState]
+  const [apiState,apiDispath] = useReducer [apiReducer,initiaApiState]
+  useEffect(()=>{
+    localStorage.setItem("favs",JSON.stringify(favState))
+  },[favState])
  useEffect(() =>{
-     const fetchSalud = async()=>{
+     const fetchUsers = async()=>{
      let res = await fetch(url)
      let data = await res.json()
-     setSaludList(data)
+     setUsersList(data)
+     apiDispath({type:"Get_Users",payload:data})
      }
-     fetchSalud()
+     fetchUsers()
  },[])
   return (
-    <ContextGlobal.Provider value={{saludList}}>
+    <ContextGlobal.Provider value={{usersList}}>
       {children}
     </ContextGlobal.Provider>
   );
