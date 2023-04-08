@@ -1,40 +1,45 @@
-import React from "react";
+
+  import React, { useState } from 'react'
+import Card from './Card'
 
 
 const Form = () => {
-  //Aqui deberan implementar el form completo con sus validaciones
+    const [user, setUser] = useState({
+        nombre:"" ,
+        phone: "",
+        email:"",
+        website:"",
+       })
+       const handleSubmit =(event) =>{
+        event.preventDefault()
 
-  
-  
-  
-  const Form = () => {
-      const [user, setUser] = useState({
-          nombre:"" ,
-          obraSocial: "",
-          email:"",
-          medico:"",
-         })
-         const handleSubmit =(event) =>{
-          event.preventDefault()
-  
-         }
-    return (
-      <div>
-          <form  onSubmit={handleSubmit}>
-          <label > Nombre Completo</label>
-          <input type="text" onChange={(event)=> setUser({...user,nombre:event.target.value})} />
-          <label > Obra social</label>
-          <input type="text" onChange={(event)=> setUser({...user,obraSocial:event.target.value})} />
-          <label >Email</label>
-          <input type="email" onChange={(event)=> setUser({...user,email:event.target.value})} />
-          <select  onChange={(event)=> setUser({...user,medico:event.target.value})}>
-              <option value="">Seleccione una respuesta</option>
-              <option value="Pediatra">Pediatra</option>
-              <option value="Cardiologo">Cardiologo</option>
-              <option value="Nutricionista">Nuticionista</option>
-          </select>
+       }
+  return (
+    <div>
+        <form  onSubmit={handleSubmit}>
+        <label > Nombre Completo</label>
+        <input type="text" onChange={(event)=> setUser({...user,nombre:event.target.value})} />
+        <label > Email</label>
+        <input type="text" onChange={(event)=> setUser({...user,email:event.target.value})} />
+        <label >phone</label>
+        <input type="phone" onChange={(event)=> setUser({...user,phone:event.target.value})} />
+        <select  onChange={(event)=> setUser({...user,website:event.target.value})}>
+            <option value="">Seleccione una respuesta</option>
+      </select>
+      
+        </form>
+       
+        <h3>tu nombre {user.nombre}  y tu email : {user.email} y tu website :{user.website} y tu {user.phone} </h3>
+
+           
         
-          </form>
-</div>
-    )
-  }
+
+
+        
+        <Card nombre= {user.nombre} medico= {user.medico}/>
+
+        </div>
+  )
+}
+
+export default Form
